@@ -1,12 +1,12 @@
 package co.gridport.kafka.hadoop;
 
-import java.io.DataInput;
-import java.io.DataOutput;
-import java.io.IOException;
-
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.io.Writable;
 import org.apache.hadoop.mapreduce.InputSplit;
+
+import java.io.DataInput;
+import java.io.DataOutput;
+import java.io.IOException;
 
 public class KafkaInputSplit extends InputSplit implements Writable {
 
@@ -16,7 +16,8 @@ public class KafkaInputSplit extends InputSplit implements Writable {
     private String topic;
     private long lastCommit;
 
-    public KafkaInputSplit() {}
+    public KafkaInputSplit() {
+    }
 
     public KafkaInputSplit(String brokerId, String broker, String topic, int partition, long lastCommit) {
         this.brokerId = brokerId;
@@ -63,18 +64,16 @@ public class KafkaInputSplit extends InputSplit implements Writable {
         return broker;
     }
 
-    public String getBrokerHost()
-    {
+    public String getBrokerHost() {
         String[] hostPort = broker.split(":");
         return hostPort[0];
     }
 
-    public int getBrokerPort()
-    {
+    public int getBrokerPort() {
         String[] hostPort = broker.split(":");
         return Integer.valueOf(hostPort[1]);
     }
-    
+
     public int getPartition() {
         return partition;
     }
@@ -89,6 +88,13 @@ public class KafkaInputSplit extends InputSplit implements Writable {
 
     @Override
     public String toString() {
-        return broker + "-" + topic + "-" + partition + "-" + lastCommit ;
+        final StringBuilder sb = new StringBuilder("KafkaInputSplit{");
+        sb.append("brokerId='").append(brokerId).append('\'');
+        sb.append(", broker='").append(broker).append('\'');
+        sb.append(", partition=").append(partition);
+        sb.append(", topic='").append(topic).append('\'');
+        sb.append(", lastCommit=").append(lastCommit);
+        sb.append("} ").append(super.toString());
+        return sb.toString();
     }
 }
